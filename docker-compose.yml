@@ -1,0 +1,18 @@
+# Inventaire d'atelier
+# Les réglages (port, dossiers) se font dans le fichier .env : voir .env.exemple.
+
+services:
+  wms:
+    build: .
+    image: wms-inventaire
+    container_name: wms
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:${WMS_PORT:-8080}:8080"
+    volumes:
+      # Base de données et photos
+      - ${WMS_DATA_DIR:-./donnees}:/data
+      # Sauvegardes quotidiennes automatiques
+      - ${WMS_BACKUP_DIR:-./sauvegardes}:/backups
+    environment:
+      - TZ=${WMS_TZ:-Europe/Paris}
